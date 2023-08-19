@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch","fullTextIndex"]
 }
 
 datasource db {
@@ -10,7 +11,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category{
-  id  String @id @default(uuid())
-  name String
+model Category {
+  id            String @id @default(uuid())
+  name          String
+  companions    Companion[]
+}
+
+
+model Companion {
+  id            String @id @default(uuid())
+  userId        String
+  userName      String
+  src           String
+  name          String @db.Text 
+  description   String
+  instruction   String @db.Text
+  seed          String @db.Text
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  category      Category @relation(fields: [categoryId], references: [id])
+  categoryId    String
+
+  textSearch  Unsupported("TSVECTOR")?
+
+  @@index([categoryId])
+  @@index([textSearch])
+
+  // @@fulltext([name])
 }
