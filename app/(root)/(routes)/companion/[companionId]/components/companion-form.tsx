@@ -12,6 +12,8 @@ import { ImageUpload } from "@/components/image-upload";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Wand2 } from "lucide-react";
 
 interface CompanionFormProps {
     initialData: Companion | null,
@@ -242,6 +244,12 @@ export const CompanionForm = ({categories, initialData}:CompanionFormProps) => {
                                 </FormItem>
                             )}
                         />
+                        <div className="w-full flex justify-center" >
+                            <Button size="lg" disabled={isLoading} >
+                                {initialData ? "Edit your companion" : "Create your companion"}
+                                <Wand2 className="w-4 h-4 ml-2" />
+                            </Button>
+                        </div>
                 </form>
             </Form>
         </div>
