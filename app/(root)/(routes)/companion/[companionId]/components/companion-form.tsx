@@ -87,7 +87,7 @@ export const CompanionForm = ({categories, initialData}:CompanionFormProps) => {
         try {
             if(initialData) {
                 //Update companion functionality
-                await axios.patch(`/api/companion/{initialData.id}`,values);
+                await axios.patch(`/api/companion/${initialData.id}`,values);
             } else {
                 //Create companion functionality
                 await axios.post("/api/companion",values);
@@ -103,6 +103,7 @@ export const CompanionForm = ({categories, initialData}:CompanionFormProps) => {
                 variant: "destructive",
                 description: "Something went wrong"
             })
+            console.log(error);
         }
     }
 

@@ -25,7 +25,7 @@ model Companion {
   src           String
   name          String @db.Text 
   description   String
-  instruction   String @db.Text
+  instructions   String @db.Text
   seed          String @db.Text
 
   createdAt     DateTime @default(now())
