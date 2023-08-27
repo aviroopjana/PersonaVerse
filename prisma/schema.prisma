@@ -23,9 +23,9 @@ model Companion {
   userId        String
   userName      String
   src           String
-  name          String @db.Text 
+  name          String @db.Text
   description   String
-  instructions   String @db.Text
+  instructions  String @db.Text
   seed          String @db.Text
 
   createdAt     DateTime @default(now())
@@ -34,10 +34,32 @@ model Companion {
   category      Category @relation(fields: [categoryId], references: [id])
   categoryId    String
 
+  messages Message[]
+
   textSearch  Unsupported("TSVECTOR")?
 
   @@index([categoryId])
   @@index([textSearch])
 
   // @@fulltext([name])
+}
+
+enum Role {
+  user 
+  system
+}
+
+model Message {
+  id          String @id @default(uuid())
+  role        Role
+  content     String @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  companionId String
+  userId      String
+
+  companion Companion @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  @@index([companionId])
 }
