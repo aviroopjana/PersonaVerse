@@ -51,7 +51,7 @@ export const ChatClient = ({
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         const userMesage: ChatMessageProps= {
             role: "user",
-            content: "completion"
+            content: input
         }
 
         setMessages((current) => [...current, userMesage]);
