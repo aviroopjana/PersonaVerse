@@ -32,7 +32,7 @@ export async function POST(
 
     const companion = await prismadb.companion.update({
       where: {
-        id: params.chatId
+        id: params.chatId,
       },
       data: {
         messages: {
@@ -49,11 +49,11 @@ export async function POST(
       return new NextResponse("Companion not found", { status: 404 });
     }
 
-    const name = companion.id;
+    const name = companion.name;
     const companion_file_name = name + ".txt";
 
     const companionKey = {
-      companionName: name!,
+      companionName: name,
       userId: user.id,
       modelName: "llama2-13b",
     };
@@ -78,6 +78,7 @@ export async function POST(
     );
 
     let relevantHistory = "";
+
     if (!!similarDocs && similarDocs.length !== 0) {
       relevantHistory = similarDocs.map((doc) => doc.pageContent).join("\n");
     }
@@ -107,7 +108,6 @@ export async function POST(
         Below are relevant details about ${companion.name}'s past and the conversation you are in.
         ${relevantHistory}
 
-
         ${recentChatHistory}\n${companion.name}:`
         )
         .catch(console.error)
@@ -123,6 +123,8 @@ export async function POST(
     let s = new Readable();
     s.push(response);
     s.push(null);
+
+
     if (response !== undefined && response.length > 1) {
       memoryManager.writeToHistory("" + response.trim(), companionKey);
 
@@ -144,6 +146,7 @@ export async function POST(
 
     return new StreamingTextResponse(s);
   } catch (error) {
+    console.log("[CHAT_POST]",error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 };
